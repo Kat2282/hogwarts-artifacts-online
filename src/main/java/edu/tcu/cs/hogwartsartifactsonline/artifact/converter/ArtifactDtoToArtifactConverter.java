@@ -5,7 +5,7 @@ import edu.tcu.cs.hogwartsartifactsonline.artifact.dto.ArtifactDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-@Component //will create an instance of this class, treat it as a bean, and inject it to other beans
+@Component
 public class ArtifactDtoToArtifactConverter implements Converter<ArtifactDto, Artifact> {
 
     @Override

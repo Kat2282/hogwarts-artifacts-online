@@ -2,7 +2,6 @@ package edu.tcu.cs.hogwartsartifactsonline.wizard;
 
 import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
-import edu.tcu.cs.hogwartsartifactsonline.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.converter.WizardDtoToWizardConverter;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.converter.WizardToWizardDtoConverter;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.dto.WizardDto;
@@ -74,7 +73,5 @@ public class WizardController {
         this.wizardService.assignArtifact(wizardId, artifactId);
         return new Result(true, StatusCode.SUCCESS, "Artifact Assignment Success");
     }
-
-
 
 }

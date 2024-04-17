@@ -5,9 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-
 import java.io.Serializable;
-
 
 @Entity
 public class Artifact implements Serializable {
@@ -23,12 +21,10 @@ public class Artifact implements Serializable {
 
     @ManyToOne
     private Wizard owner;
-    //many artifacts to one owner
 
 
     public Artifact() {
     }
-
 
     public String getId() {
         return id;
@@ -62,7 +58,6 @@ public class Artifact implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-
     public Wizard getOwner() {
         return owner;
     }
@@ -70,4 +65,5 @@ public class Artifact implements Serializable {
     public void setOwner(Wizard owner) {
         this.owner = owner;
     }
+
 }

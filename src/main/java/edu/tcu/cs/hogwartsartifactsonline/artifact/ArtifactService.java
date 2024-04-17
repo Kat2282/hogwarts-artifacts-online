@@ -6,19 +6,15 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
-    //puts every method in this class in its own transaction.
-    // if a method throws an exception while executing modification to a database, that method will be abandoned (a rowback occurs)
 public class ArtifactService {
 
-    //inject dependencies into dependent
-    //artifactService depends on artifactRepository, so well inject repository into service
     private final ArtifactRepository artifactRepository;
 
     private final IdWorker idWorker;
+
 
     public ArtifactService(ArtifactRepository artifactRepository, IdWorker idWorker) {
         this.artifactRepository = artifactRepository;
@@ -27,7 +23,6 @@ public class ArtifactService {
 
     public Artifact findById(String artifactId) {
         return this.artifactRepository.findById(artifactId)
-//                .orElseThrow(() -> new ObjectNotFoundException(Optional.of("artifact"), artifactId));
                 .orElseThrow(() -> new ObjectNotFoundException("artifact", artifactId));
     }
 
@@ -48,15 +43,13 @@ public class ArtifactService {
                     oldArtifact.setImageUrl(update.getImageUrl());
                     return this.artifactRepository.save(oldArtifact);
                 })
-                //this line was different on his code, wasn't working, checked the docs and it was different so I used it instead
                 .orElseThrow(() -> new ObjectNotFoundException("artifact", artifactId));
     }
 
     public void delete(String artifactId) {
-        //find if id exists or not
         this.artifactRepository.findById(artifactId)
                 .orElseThrow(() -> new ObjectNotFoundException("artifact", artifactId));
         this.artifactRepository.deleteById(artifactId);
     }
-}
 
+}
