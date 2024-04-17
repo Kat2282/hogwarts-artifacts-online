@@ -1,1 +1,1 @@
-# hogwats-artifacts-online
+# hogwarts-artifacts-online

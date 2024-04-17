@@ -1,6 +1,5 @@
 package edu.tcu.cs.hogwartsartifactsonline.system.exception;
 
-import edu.tcu.cs.hogwartsartifactsonline.artifact.ArtifactNotFoundException;
 import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
 import org.springframework.http.HttpStatus;
@@ -18,12 +17,11 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
 
-    @ExceptionHandler(ArtifactNotFoundException.class)
+    @ExceptionHandler(ObjectNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
         //tells spring, if you encounter this exception, send it to me and ill handle it
-    Result handlerArtifactNotFoundException(ArtifactNotFoundException ex) {
+    Result handlerObjectNotFoundException(Exception ex) {
         return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
-            //flag, status, message, data (don't need to send data here)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
