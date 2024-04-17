@@ -2,22 +2,27 @@ package edu.tcu.cs.hogwartsartifactsonline.system;
 
 import edu.tcu.cs.hogwartsartifactsonline.artifact.Artifact;
 import edu.tcu.cs.hogwartsartifactsonline.artifact.ArtifactRepository;
+import edu.tcu.cs.hogwartsartifactsonline.hogwartsuser.HogwartsUser;
+import edu.tcu.cs.hogwartsartifactsonline.hogwartsuser.UserRepository;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.Wizard;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.WizardRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-@Component //will treat this DBDataInitializer as a bean
+@Component
 public class DBDataInitializer implements CommandLineRunner {
 
     private final ArtifactRepository artifactRepository;
 
     private final WizardRepository wizardRepository;
 
+    private final UserRepository userRepository;
 
-    public DBDataInitializer(ArtifactRepository artifactRepository, WizardRepository wizardRepository) {
+
+    public DBDataInitializer(ArtifactRepository artifactRepository, WizardRepository wizardRepository, UserRepository userRepository) {
         this.artifactRepository = artifactRepository;
         this.wizardRepository = wizardRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -75,12 +80,38 @@ public class DBDataInitializer implements CommandLineRunner {
         w3.setName("Neville Longbottom");
         w3.addArtifact(a5);
 
-        //if you save a wizard, all of its artifacts will be saved aswell. (cascade type = persist and merge (in wizard class))
         wizardRepository.save(w1);
         wizardRepository.save(w2);
         wizardRepository.save(w3);
 
-        artifactRepository.save(a6); //have to save separately b/c we haven't assigned it to a wizard
+        artifactRepository.save(a6);
+
+
+        // Create some users.
+        HogwartsUser u1 = new HogwartsUser();
+        u1.setId(1);
+        u1.setUsername("john");
+        u1.setPassword("123456");
+        u1.setEnabled(true);
+        u1.setRoles("admin user");
+
+        HogwartsUser u2 = new HogwartsUser();
+        u2.setId(2);
+        u2.setUsername("eric");
+        u2.setPassword("654321");
+        u2.setEnabled(true);
+        u2.setRoles("user");
+
+        HogwartsUser u3 = new HogwartsUser();
+        u3.setId(3);
+        u3.setUsername("tom");
+        u3.setPassword("qwerty");
+        u3.setEnabled(false);
+        u3.setRoles("user");
+
+        this.userRepository.save(u1);
+        this.userRepository.save(u2);
+        this.userRepository.save(u3);
     }
 
 }
