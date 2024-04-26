@@ -17,9 +17,8 @@ public class Wizard implements Serializable {
     private String name;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
-    //mappedBy tells sprint that the other side will take care of stuff
     private List<Artifact> artifacts = new ArrayList<>();
-    //one wizard to many artifacts
+
 
     public Wizard() {
     }
@@ -63,8 +62,9 @@ public class Wizard implements Serializable {
     }
 
     public void removeArtifact(Artifact artifactToBeAssigned) {
-        //remove artifact owner
+        // Remove artifact owner.
         artifactToBeAssigned.setOwner(null);
         this.artifacts.remove(artifactToBeAssigned);
     }
+
 }
