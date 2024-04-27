@@ -12,9 +12,9 @@ public class UserToUserDtoConverter implements Converter<HogwartsUser, UserDto> 
     public UserDto convert(HogwartsUser source) {
         // We are not setting password in DTO.
         final UserDto userDto = new UserDto(source.getId(),
-                source.getUsername(),
-                source.isEnabled(),
-                source.getRoles());
+                                            source.getUsername(),
+                                            source.isEnabled(),
+                                            source.getRoles());
         return userDto;
     }
 
