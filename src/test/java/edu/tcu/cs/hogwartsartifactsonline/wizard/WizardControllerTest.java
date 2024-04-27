@@ -203,8 +203,8 @@ class WizardControllerTest {
         given(this.wizardService.update(eq(5), Mockito.any(Wizard.class))).willThrow(new ObjectNotFoundException("wizard", 5));
 
         WizardDto wizardDto = new WizardDto(5, // This id does not exist in the database.
-                "Updated wizard name",
-                0);
+                                            "Updated wizard name",
+                                            0);
 
         String json = this.objectMapper.writeValueAsString(wizardDto);
 
