@@ -1,3 +1,4 @@
+
 package edu.tcu.cs.hogwartsartifactsonline.hogwartsuser.converter;
 
 import edu.tcu.cs.hogwartsartifactsonline.hogwartsuser.HogwartsUser;
