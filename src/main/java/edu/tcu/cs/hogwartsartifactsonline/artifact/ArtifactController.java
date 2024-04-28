@@ -1,10 +1,12 @@
 package edu.tcu.cs.hogwartsartifactsonline.artifact;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import edu.tcu.cs.hogwartsartifactsonline.artifact.converter.ArtifactDtoToArtifactConverter;
 import edu.tcu.cs.hogwartsartifactsonline.artifact.converter.ArtifactToArtifactDtoConverter;
 import edu.tcu.cs.hogwartsartifactsonline.artifact.dto.ArtifactDto;
 import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,16 +23,20 @@ public class ArtifactController {
 
     private final ArtifactDtoToArtifactConverter artifactDtoToArtifactConverter;
 
+    private final MeterRegistry meterRegistry;
 
-    public ArtifactController(ArtifactService artifactService, ArtifactToArtifactDtoConverter artifactToArtifactDtoConverter, ArtifactDtoToArtifactConverter artifactDtoToArtifactConverter) {
+
+    public ArtifactController(ArtifactService artifactService, ArtifactToArtifactDtoConverter artifactToArtifactDtoConverter, ArtifactDtoToArtifactConverter artifactDtoToArtifactConverter, MeterRegistry meterRegistry) {
         this.artifactService = artifactService;
         this.artifactToArtifactDtoConverter = artifactToArtifactDtoConverter;
         this.artifactDtoToArtifactConverter = artifactDtoToArtifactConverter;
+        this.meterRegistry = meterRegistry;
     }
 
     @GetMapping("/{artifactId}")
     public Result findArtifactById(@PathVariable String artifactId){
         Artifact foundArtifact = this.artifactService.findById(artifactId);
+        this.meterRegistry.counter("artifact.id." + artifactId).increment();
         ArtifactDto artifactDto = this.artifactToArtifactDtoConverter.convert(foundArtifact);
         return new Result(true, StatusCode.SUCCESS, "Find One Success", artifactDto);
     }
@@ -66,6 +72,17 @@ public class ArtifactController {
     public Result deleteArtifact(@PathVariable String artifactId){
         this.artifactService.delete(artifactId);
         return new Result(true, StatusCode.SUCCESS, "Delete Success");
+    }
+
+    @GetMapping("/summary")
+    public Result summarizeArtifacts() throws JsonProcessingException {
+        List<Artifact> foundArtifacts = this.artifactService.findAll();
+        // Convert foundArtifacts to a list of artifactDtos
+        List<ArtifactDto> artifactDtos = foundArtifacts.stream()
+                .map(this.artifactToArtifactDtoConverter::convert)
+                .collect(Collectors.toList());
+        String artifactSummary = this.artifactService.summarize(artifactDtos);
+        return new Result(true, StatusCode.SUCCESS, "Summarize Success", artifactSummary);
     }
 
 }
