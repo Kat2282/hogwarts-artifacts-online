@@ -37,4 +37,4 @@ management:
       enabled: true
   tracing:
     sampling:
-      probability: 1 # Only for demo purpose, change it back to 0.1 in production.
+      probability: 0.1 # Only for demo purpose (1), change it back to 0.1 in production.
